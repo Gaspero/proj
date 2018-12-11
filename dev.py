@@ -8,9 +8,6 @@ from werkzeug.contrib.fixers import ProxyFix
 from apscheduler.schedulers.background import BackgroundScheduler
 
 conn = sqlite3.connect("new.db")
-c = conn.cursor()
-c.execute("Create TABLE if not exists %s (date,cycle,pressure FLOAT,wind FLOAT,humidity FLOAT ,UNIQUE(date, cycle))"
-              % place)
 
 
 app = Flask(__name__)
