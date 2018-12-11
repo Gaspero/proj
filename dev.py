@@ -4,7 +4,7 @@ import re
 import atexit
 from flask import Flask
 from flask import render_template
-#from apscheduler.scheduler import Scheduler
+from werkzeug.contrib.fixers import ProxyFix
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -83,9 +83,6 @@ def hello(name=None):
         else:
             return render_template('report1.html', name=name)
 
-#KLWB
-#KS52
-#KEVU
 def job_function():
     for i in places:
         get_data(i)
@@ -94,7 +91,7 @@ scheduler.add_job(func=job_function, trigger="interval", minutes=15)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
+app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
     app.run()
-#app.run('0.0.0.0', port=8087)
 
