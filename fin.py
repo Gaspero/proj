@@ -97,7 +97,7 @@ def job_function():
     for i in places:
         get_data(i)
 
-scheduler.add_job(func=job_function, trigger="interval", minutes=1)
+scheduler.add_job(func=job_function, trigger="interval", minutes=60)
 scheduler.start()
 # atexit.register(lambda: scheduler.shutdown())
 
