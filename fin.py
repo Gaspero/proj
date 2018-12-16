@@ -2,6 +2,7 @@ import requests
 import re
 import atexit
 import sqlite3
+import json
 from flask import Flask, render_template, g
 from werkzeug.contrib.fixers import ProxyFix
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -97,10 +98,42 @@ def job_function():
     for i in places:
         get_data(i)
 
+@app.route("/reports/<name>/plot")
+def chart(name=None):
+    with app.app_context():
+        db = get_db()
+        cur = db.cursor()
+        sql1 = """SELECT pressure FROM %s"""
+        cur.execute(sql1 % (name))
+        data1 = json.dumps(cur.fetchall())
+        cur.execute(sql1 % (name))
+        sql2 = """SELECT date, cycle FROM %s"""
+        cur.execute(sql2 % (name))
+        weeks = json.dumps(cur.fetchall())
+        sql3 = """SELECT wind FROM %s"""
+        cur.execute(sql3 % (name))
+        data2 = json.dumps(cur.fetchall())
+        sql4 = """SELECT humidity FROM %s"""
+        cur.execute(sql4 % (name))
+        data3 = json.dumps(cur.fetchall())
+        #db.commit()
+        sql5 = """SELECT pressure,humidity,wind FROM %s WHERE rowid = (SELECT MAX(rowid) FROM %s) AND (pressure < 990 
+                        OR humidity > 60 OR wind > 10)"""
+        cur.execute(sql5 % (name, name))
+        db.commit()
+        status = cur.fetchall()
+        if not status:
+            #data = True
+            return render_template('plot1.html', weeks=weeks, data1=data1, data2=data2, data3=data3)
+        else:
+            data = "false"
+            return render_template('plot1.html', weeks=weeks, data1=data1, data2=data2, data3=data3, data=data)
+        #return render_template('plot1.html', weeks=weeks, data1=data1, data2=data2, data3=data3, data=data)
+
 scheduler.add_job(func=job_function, trigger="interval", minutes=60)
 scheduler.start()
 # atexit.register(lambda: scheduler.shutdown())
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8089)
