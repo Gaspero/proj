@@ -143,4 +143,4 @@ scheduler.start()
 app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
     job_function()
-    app.run(port=5050)
+    app.run('83.220.168.38', port=5050)
