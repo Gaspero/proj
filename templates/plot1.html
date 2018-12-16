@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Report</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+</head>
+<body>
+<h1>Report</h1>
+
+{% if data %}
+<h2>Current weather condition is not OK</h2>
+{% else %}
+<h2>Everything is OK</h2>
+{% endif %}
+
+<div class="box_plot">
+   <div class="innerContent">
+       <h2>Pressure</h2>
+        <canvas id="myChart" width=window.innerWidth height="400"></canvas>
+   </div>
+</div>
+<div class="box_plot">
+   <div class="innerContent">
+       <h2>Wind</h2>
+        <canvas id="myChart2" width=window.innerWidth height="400"></canvas>
+   </div>
+</div>
+<div class="box_plot">
+   <div class="innerContent">
+       <h2>Humidity</h2>
+        <canvas id="myChart3" width=window.innerWidth height="400"></canvas>
+   </div>
+</div>
+  <script>
+    // Get the context of the canvas element we want to select
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var weeks = {{weeks|safe}};
+    var data1 = {{data1|safe}};
+    // var data2 = {{data2|safe}};
+    var data = {
+        labels: weeks,
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: data1
+            }
+        ]
+    };
+    var myLineChart = new Chart(ctx).Line(data);
+  </script>
+
+  <script>
+    // Get the context of the canvas element we want to select
+    var ctx = document.getElementById("myChart2").getContext("2d");
+    var weeks = {{weeks|safe}};
+    //var data1 = {{data1|safe}};
+    var data2 = {{data2|safe}};
+    var dataZ = {
+        labels: weeks,
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: data2
+            }
+        ]
+    };
+    var myLineChart = new Chart(ctx).Line(dataZ);
+  </script>
+  <script>
+    // Get the context of the canvas element we want to select
+    var ctx = document.getElementById("myChart3").getContext("2d");
+    var weeks = {{weeks|safe}};
+    //var data1 = {{data1|safe}};
+    var data3 = {{data3|safe}};
+    var dataZ = {
+        labels: weeks,
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: data3
+            }
+        ]
+    };
+    var myLineChart = new Chart(ctx).Line(dataZ);
+  </script>
+
+</body>
+</html>
