@@ -78,14 +78,15 @@ def get_data(place):
 def hello_world():
     return render_template('page.html')
 
+"""
 @app.route('/reports/')
 @app.route('/reports/<name>')
 def hello(name=None):
     with app.app_context():
         db = get_db()
         cur = db.cursor()
-        sql = """SELECT pressure,humidity,wind FROM %s WHERE rowid = (SELECT MAX(rowid) FROM %s) AND (pressure < 990 
-                OR humidity > 60 OR wind > 10)"""
+        #sql = "SELECT pressure,humidity,wind FROM %s WHERE rowid = (SELECT MAX(rowid) FROM %s) AND (pressure < 990 
+        #        OR humidity > 60 OR wind > 10)"
         cur.execute(sql % (name,name))
         db.commit()
         data = cur.fetchall()
@@ -93,12 +94,15 @@ def hello(name=None):
             return render_template('report2.html', name=name)
         else:
             return render_template('report1.html', name=name)
+"""
 
 def job_function():
     for i in places:
         get_data(i)
 
-@app.route("/reports/<name>/plot")
+#@app.route("/reports/<name>/plot")
+@app.route('/reports/')
+@app.route('/reports/<name>')
 def chart(name=None):
     with app.app_context():
         db = get_db()
@@ -136,4 +140,4 @@ scheduler.start()
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
-    app.run(debug=True, port=8089)
+    app.run()
