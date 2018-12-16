@@ -143,4 +143,4 @@ scheduler.start()
 app.wsgi_app = ProxyFix(app.wsgi_app)
 if __name__ == '__main__':
     job_function()
-    app.run(host='http://donkey1.nosoc.io', port=5050)
+    app.run(port=5050)
