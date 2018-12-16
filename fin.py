@@ -68,6 +68,8 @@ def get_data(place):
         # cur.close()
 
     try:
+        db = get_db()
+        cur = db.cursor()
         cur.execute("INSERT INTO %s VALUES (?,?,?,?,?)" % place, (date, cycle, pressure, wind, humidity))
         db.commit()
         # cur.close()
