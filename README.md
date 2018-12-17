@@ -1,5 +1,5 @@
 # proj
-runn virtualenv
+run virtualenv
 
 install dependencies from requirments.txt
 
